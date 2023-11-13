@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoJDBCImpl implements UserDao {
+public class    UserDaoJDBCImpl implements UserDao {
     private static final Connection connection = Util.getConnection();
     public UserDaoJDBCImpl() {
 
@@ -25,7 +25,13 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        String sql = "DROP TABLE IF EXISTS users";
+        String sql = "DROP TABLE IF EXISTS users;";
+
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 
     public void saveUser(String name, String lastName, byte age) {
