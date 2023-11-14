@@ -13,7 +13,7 @@ public class Util {
     public static Connection getConnection() {
         Connection connection;
         try {
-            connection =DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException();
         }
