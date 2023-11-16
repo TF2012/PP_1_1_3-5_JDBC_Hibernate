@@ -10,10 +10,10 @@ import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
     private Transaction transaction;
+
     public UserDaoHibernateImpl() {
 
     }
-
 
     @Override
     public void createUsersTable() {
@@ -24,9 +24,7 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            transaction.rollback();
         }
-
     }
 
     @Override
@@ -37,7 +35,6 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            transaction.rollback();
         }
     }
 
