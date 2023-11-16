@@ -17,7 +17,20 @@ public class Util {
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
-                Configuration configuration = getConfiguration();
+                Configuration configuration = new Configuration();
+
+                Properties properties = new Properties();
+                properties.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
+                properties.put(Environment.URL, "jdbc:mysql://localhost:3306/myjdbctest");
+                properties.put(Environment.USER, "root");
+                properties.put(Environment.PASS, "root");
+                properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
+
+                properties.put(Environment.SHOW_SQL, "true");
+                properties.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+                properties.put(Environment.HBM2DDL_AUTO, "create-drop");
+
+                configuration.setProperties(properties);
                 configuration.addAnnotatedClass(User.class);
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
@@ -28,24 +41,6 @@ public class Util {
             }
         }
         return sessionFactory;
-    }
-
-    private static Configuration getConfiguration() {
-        Configuration configuration = new Configuration();
-
-        Properties properties = new Properties();
-        properties.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-        properties.put(Environment.URL, "jdbc:mysql://localhost:3306/myjdbctest");
-        properties.put(Environment.USER, "root");
-        properties.put(Environment.PASS, "root");
-        properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
-
-        properties.put(Environment.SHOW_SQL, "true");
-        properties.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-        properties.put(Environment.HBM2DDL_AUTO, "create-drop");
-
-        configuration.setProperties(properties);
-        return configuration;
     }
 
     private static final String URL = "jdbc:mysql://localhost:3306/myjdbctest";
