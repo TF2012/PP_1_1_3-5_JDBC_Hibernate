@@ -35,7 +35,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void dropUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery(DROP).executeUpdate();
+            session.createNativeQuery(DROP).executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,7 +82,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void cleanUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery(TRUNCATE).executeUpdate();
+            session.createNativeQuery(TRUNCATE).executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
