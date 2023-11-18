@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
     private Transaction transaction;
-    private static final String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users(id INT NOT NULL AUTO_INCREMENT, name VARCHAR(45), " +
+    private static final String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS User(id INT NOT NULL AUTO_INCREMENT, name VARCHAR(45), " +
             "lastname VARCHAR(45), age TINYINT, PRIMARY_KEY(id));";
     private static final String DROP = "DROP TABLE IF EXISTS User;";
     private static final String FROM = "FROM User";
@@ -24,7 +24,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void createUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery(CREATE_USER_TABLE);
+            session.createNativeQuery(CREATE_USER_TABLE);
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,9 +70,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
         try (Session session = Util.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            list = session.createQuery(FROM).list();
-            transaction.commit();
+            list = session.createQuery(FROM, User.class).list();
         } catch (Exception e) {
             e.printStackTrace();
             transaction.rollback();
