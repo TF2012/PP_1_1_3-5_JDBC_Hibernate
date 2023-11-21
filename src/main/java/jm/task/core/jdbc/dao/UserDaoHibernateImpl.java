@@ -2,6 +2,8 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
+import org.hibernate.HibernateError;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -23,9 +25,12 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void createUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
             session.createNativeQuery(CREATE_USER_TABLE, User.class);
+            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
+            transaction.rollback();
         }
     }
 
@@ -49,15 +54,19 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
+            transaction.rollback();
         }
     }
 
     @Override
     public void removeUserById(long id) {
         try (Session session = Util.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
             session.delete(session.get(User.class, id));
+            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
+            transaction.rollback();
         }
     }
 
@@ -75,9 +84,12 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void cleanUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
-            session.createNativeQuery(TRIM, User.class);
-        } catch (Exception e) {
+            transaction = session.beginTransaction();
+            session.createNativeQuery(TRIM).executeUpdate();
+            transaction.commit();
+        } catch (HibernateException e) {
             e.printStackTrace();
+            transaction.rollback();
         }
     }
 }
