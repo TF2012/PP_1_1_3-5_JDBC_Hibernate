@@ -16,7 +16,7 @@ public class UserDaoHibernateImpl implements UserDao {
             "lastname VARCHAR(45), age TINYINT, PRIMARY_KEY(id));";
     private final String DROP = "DROP TABLE IF EXISTS User;";
     private final String FROM_USER = "FROM User";
-    private final String TRIM = "TRIM TABLE User";
+    private final String DELETE = "DELETE FROM User";
 
     public UserDaoHibernateImpl() {
 
@@ -85,7 +85,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void cleanUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createNativeQuery(TRIM).executeUpdate();
+            session.createQuery(DELETE).executeUpdate();
             transaction.commit();
         } catch (HibernateException e) {
             e.printStackTrace();
