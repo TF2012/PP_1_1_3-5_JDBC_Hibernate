@@ -19,7 +19,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void createUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery("CREATE TABLE IF NOT EXISTS User(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
+            session.createSQLQuery("CREATE TABLE IF NOT EXISTS users(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
                     "name VARCHAR(255), lastname VARCHAR(255), age TINYINT);").executeUpdate();
             transaction.commit();
         } catch (Exception e) {
@@ -31,7 +31,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void dropUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery("DROP TABLE IF EXISTS User;").executeUpdate();
+            session.createSQLQuery("DROP TABLE IF EXISTS users;").executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
@@ -63,7 +63,7 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         try (Session session = Util.getSessionFactory().openSession()) {
-            return session.createQuery("from User", User.class).getResultList();
+            return session.createQuery("FROM User", User.class).getResultList();
         } catch (Exception e) {
             throw new RuntimeException();
         }
